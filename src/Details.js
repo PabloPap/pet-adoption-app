@@ -8,12 +8,19 @@ const petfinder = pf({
 });
 
 class Details extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     loading: true
+  //   };
+  // }
+
+  // define state as a top level property of a class
+  // stage 3 or 4 in late 2018
+  // use babel to accept this
+  state = {
+    loading: true
+  };
   componentDidMount() {
     petfinder.pet
       .get({
