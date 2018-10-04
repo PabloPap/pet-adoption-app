@@ -24360,7 +24360,169 @@ var Details = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Details;
-},{"react":"../node_modules/react/index.js","petfinder-client":"../node_modules/petfinder-client/index.js","@reach/router/lib/history":"../node_modules/@reach/router/lib/history.js","./Carousel":"Carousel.js"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","petfinder-client":"../node_modules/petfinder-client/index.js","@reach/router/lib/history":"../node_modules/@reach/router/lib/history.js","./Carousel":"Carousel.js"}],"SearchParams.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _petfinderClient = require("petfinder-client");
+
+var _petfinderClient2 = _interopRequireDefault(_petfinderClient);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var petfinder = (0, _petfinderClient2.default)({
+  key: "f98603189dc2c5259419fdd45e4c3cdf",
+  secret: "6e5b30d2e85509adb2860fcfd31f285b"
+});
+
+var SearchParams = function (_React$Component) {
+  _inherits(SearchParams, _React$Component);
+
+  function SearchParams() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, SearchParams);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SearchParams.__proto__ || Object.getPrototypeOf(SearchParams)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      location: "Seattle, WA",
+      animal: "",
+      breed: "",
+      breeds: []
+    }, _this.handleLocationChange = function (event) {
+      _this.setState({
+        location: event.target.value
+      });
+    }, _this.handleAnimalChange = function (event) {
+      _this.setState({
+        animal: event.target.value
+        // breed: ""
+      }, _this.getBreeds);
+    }, _this.handleBreedChange = function (event) {
+      _this.setState({
+        breed: event.target.value
+      });
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(SearchParams, [{
+    key: "getBreeds",
+    value: function getBreeds() {
+      var _this2 = this;
+
+      if (this.state.animal) {
+        petfinder.breed.list({ animal: this.state.animal }).then(function (data) {
+          if (data.petfinder && data.petfinder.breeds && Array.isArray(data.petfinder.breeds.breed)) {
+            _this2.setState({
+              breeds: data.petfinder.breeds.breed
+            });
+          } else {
+            _this2.setState({
+              breeds: []
+            });
+          }
+        }).catch(console.error);
+      } else {
+        this.setState({ breeds: [] });
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "div",
+        { className: "search-params" },
+        _react2.default.createElement(
+          "label",
+          { htmlFor: "location" },
+          "Location",
+          _react2.default.createElement("input", {
+            onChange: this.handleLocationChange,
+            id: "location",
+            value: this.state.location,
+            type: "text",
+            placeholder: "Location"
+          })
+        ),
+        _react2.default.createElement(
+          "label",
+          { htmlFor: "animal" },
+          "Animal",
+          _react2.default.createElement(
+            "select",
+            {
+              id: "animal",
+              value: this.state.animal,
+              onChange: this.handleAnimalChange,
+              onBlur: this.handleAnimalChange
+            },
+            _react2.default.createElement("option", null),
+            _petfinderClient.ANIMALS.map(function (animal) {
+              return _react2.default.createElement(
+                "option",
+                { key: animal, value: animal },
+                animal
+              );
+            })
+          )
+        ),
+        _react2.default.createElement(
+          "label",
+          { htmlFor: "breed" },
+          "Breed",
+          _react2.default.createElement(
+            "select",
+            {
+              disabled: !this.state.breeds.length,
+              id: "breed",
+              value: this.state.breed,
+              onChange: this.handleBreedChange,
+              onBlur: this.handleBreedChange
+            },
+            _react2.default.createElement("option", null),
+            this.state.breeds.map(function (breed) {
+              return _react2.default.createElement(
+                "option",
+                { key: breed, value: breed },
+                breed
+              );
+            })
+          )
+        ),
+        _react2.default.createElement(
+          "button",
+          null,
+          "Submit"
+        )
+      );
+    }
+  }]);
+
+  return SearchParams;
+}(_react2.default.Component);
+
+exports.default = SearchParams;
+},{"react":"../node_modules/react/index.js","petfinder-client":"../node_modules/petfinder-client/index.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -24380,6 +24542,10 @@ var _Results2 = _interopRequireDefault(_Results);
 var _Details = require("./Details");
 
 var _Details2 = _interopRequireDefault(_Details);
+
+var _SearchParams = require("./SearchParams");
+
+var _SearchParams2 = _interopRequireDefault(_SearchParams);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24417,7 +24583,8 @@ var App = function (_React$Component) {
           _router.Router,
           null,
           _react2.default.createElement(_Results2.default, { path: "/" }),
-          _react2.default.createElement(_Details2.default, { path: "/details/:id" })
+          _react2.default.createElement(_Details2.default, { path: "/details/:id" }),
+          _react2.default.createElement(_SearchParams2.default, { path: "/search-params" })
         )
       );
     }
@@ -24427,7 +24594,7 @@ var App = function (_React$Component) {
 }(_react2.default.Component);
 
 (0, _reactDom.render)(_react2.default.createElement(App, null), document.getElementById("root"));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","@reach/router":"../node_modules/@reach/router/es/index.js","./Results":"Results.js","./Details":"Details.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","@reach/router":"../node_modules/@reach/router/es/index.js","./Results":"Results.js","./Details":"Details.js","./SearchParams":"SearchParams.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -24456,7 +24623,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '37961' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '36467' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
