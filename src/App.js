@@ -28,7 +28,7 @@ class App extends React.Component {
       breeds: [],
       handleAnimalChange: this.handleAnimalChange,
       handleBreedChange: this.handleBreedChange,
-      handleLocationhange: this.handleLocationhange,
+      handleLocationChange: this.handleLocationChange,
       getBreeds: this.getBreeds
     };
   }

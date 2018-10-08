@@ -8,56 +8,62 @@ import { Consumer } from "./SearchContext";
 // but with context for its scope
 //* take advantage the fact that any function that
 //* returns markup is a component
-class SearchParams extends React.Component {
+class SearchBox extends React.Component {
+  handleFormSubmit = event => {
+    event.preventDefault();
+    this.props.search();
+  };
   render() {
     return (
       <Consumer>
         {context => (
           <div className="search-params">
-            <label htmlFor="location">
-              Location
-              <input
-                onChange={this.handleLocationChange}
-                id="location"
-                value={this.state.location}
-                type="text"
-                placeholder="Location"
-              />
-            </label>
-            <label htmlFor="animal">
-              Animal
-              <select
-                id="animal"
-                value={this.state.animal}
-                onChange={this.handleAnimalChange}
-                onBlur={this.handleAnimalChange}
-              >
-                <option />
-                {ANIMALS.map(animal => (
-                  <option key={animal} value={animal}>
-                    {animal}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label htmlFor="breed">
-              Breed
-              <select
-                disabled={!this.state.breeds.length}
-                id="breed"
-                value={this.state.breed}
-                onChange={this.handleBreedChange}
-                onBlur={this.handleBreedChange}
-              >
-                <option />
-                {this.state.breeds.map(breed => (
-                  <option key={breed} value={breed}>
-                    {breed}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button>Submit</button>
+            <form onSubmit={this.props.search}>
+              <label htmlFor="location">
+                Location
+                <input
+                  onChange={context.handleLocationChange}
+                  id="location"
+                  value={context.location}
+                  type="text"
+                  placeholder="Location"
+                />
+              </label>
+              <label htmlFor="animal">
+                Animal
+                <select
+                  id="animal"
+                  value={context.animal}
+                  onChange={context.handleAnimalChange}
+                  onBlur={context.handleAnimalChange}
+                >
+                  <option />
+                  {ANIMALS.map(animal => (
+                    <option key={animal} value={animal}>
+                      {animal}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label htmlFor="breed">
+                Breed
+                <select
+                  disabled={!context.breeds.length === 0}
+                  id="breed"
+                  value={context.breed}
+                  onChange={context.handleBreedChange}
+                  onBlur={context.handleBreedChange}
+                >
+                  <option />
+                  {context.breeds.map(breed => (
+                    <option key={breed} value={breed}>
+                      {breed}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button>Submit</button>
+            </form>
           </div>
         )}
       </Consumer>
@@ -65,4 +71,9 @@ class SearchParams extends React.Component {
   }
 }
 
-export default SearchParams;
+export default SearchBox;
+
+// if you only have to reference context inside of the render
+// you can do it like here, but if you want to do it inside lifecycle methods
+// like you have to do it like in Results.js ( we need it on props so that we
+// can reference it inside of search and componentdidmount)
