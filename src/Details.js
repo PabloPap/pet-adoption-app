@@ -63,9 +63,7 @@ class Details extends React.Component {
         <Carousel media={media} />
         <div>
           <h1>{name}</h1>
-          <h2>
-            {animal} - {breed} - {location}
-          </h2>
+          <h2>{`${animal} — ${breed} — ${location}`}</h2>
           <p>{description}</p>
         </div>
       </div>

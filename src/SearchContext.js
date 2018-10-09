@@ -9,14 +9,14 @@ const SearchContext = React.createContext({
   // methods use for testing purposes
   // not the real implementation of this methods
   // just decribing to react what they look like
-  location: "Seattle, MA",
+  location: "Seattle, WA",
   animal: "",
   breed: "",
   breeds: [],
   // methods for the consumers components to modify the data
   handleAnimalChange() {},
   handleBreedChange() {},
-  handleLocationhange() {},
+  handleLocationChange() {},
   getBreeds() {}
 });
 
